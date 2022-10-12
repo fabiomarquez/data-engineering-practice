@@ -1,4 +1,4 @@
-# Author: Fábio Marquez de Cravalho Júnior
+# Author: Fábio Marquez de Carvalho Júnior
 # Date: 26/04/2022
 
 # Objectives:
@@ -28,15 +28,20 @@ def main():
 
     csv_data = requests.get(csv_url)
 
-    with open('Exercise-2/data.csv', 'wb') as file:
+    with open('data.csv', 'wb') as file:
         for chunk in csv_data:
             file.write(chunk)
 
-    df = pd.read_csv(filepath_or_buffer = 'Exercise-2/data.csv', sep = ',')
+    df = pd.read_csv(filepath_or_buffer = 'data.csv', sep = ',')
 
     max_value = max(df.HourlyDryBulbTemperature)
 
-    print(df[df.HourlyDryBulbTemperature == max_value])
+    record = df[df.HourlyDryBulbTemperature == max_value]
+
+    response = record.to_dict(orient='records')
+
+    for key, value in response[0].items():
+        print(key, ':', value)
 
 if __name__ == '__main__':
     main()
