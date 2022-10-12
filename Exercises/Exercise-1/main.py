@@ -3,13 +3,13 @@
 
 # Objectives:
 
-# Create the directory downloads if it doesn't exist
-# Download the files one by one
-# Split out the filename from the URI, so the file keeps its original filename
-# Each file is a zip, extract the csv from the zip and delete the zip file
-# For extra credit, download the files in an async manner using the Python package aiohttp
-# Also try using ThreadPoolExecutor in Python to download the files
-# Write unit tests to improve your skills
+# Create the directory downloads if it doesn't exist                                            [OK]
+# Download the files one by one                                                                 [OK]
+# Split out the filename from the URI, so the file keeps its original filename                  [OK]
+# Each file is a zip, extract the csv from the zip and delete the zip file                      [OK]
+# For extra credit, download the files in an async manner using the Python package aiohttp      [  ]
+# Also try using ThreadPoolExecutor in Python to download the files                             [  ]
+# Write unit tests to improve your skills                                                       [  ]
 
 
 import requests
@@ -27,24 +27,33 @@ download_uris = [
 ]
 
 def get_filename(url):
-  first_delimiter = '.com/'
-  second_delimiter = '.zip'
-  start = url.find(first_delimiter) + len(first_delimiter)
-  end = url.find(second_delimiter)
-  name = url[start:end]
-  return name
+    '''
+    Function that extracts the filename from a URL
+    '''
+
+    first_delimiter = '.com/'
+    second_delimiter = '.zip'
+    start = url.find(first_delimiter) + len(first_delimiter)
+    end = url.find(second_delimiter)
+    name = url[start:end]
+    return name
 
 def download_file(url, path):
-  file = requests.get(url)
-  file_name = get_filename(url)
-  print(f'Downloading {file_name}...')
+    '''
+    Function that given a URL, downloas it's content and save it in a 'path' location
+    '''
 
-  with open(f'{path}/{file_name}.zip', "wb") as content:
-      content.write(file.content)
+    file = requests.get(url)
+    file_name = get_filename(url)
+    print(f'Downloading {file_name}...')
 
-  print(f'{file_name} downloaded succesfully!')
+    # Create the file in a path and fullfil it's content
+    with open(f'{path}/{file_name}.zip', "wb") as content:
+        content.write(file.content)
 
-  return file_name
+    print(f'{file_name} downloaded succesfully!')
+
+    return file_name
 
 def extract_file(path, file_name):
   
@@ -59,6 +68,9 @@ def main():
     # Creating a folder named downloads if it not exists already
     if 'downloads' not in os.listdir():
         os.mkdir('downloads')
+        print('Creating download folder...')
+    else:
+        print('Download folder already exists...')
     
     path = 'downloads'
 
